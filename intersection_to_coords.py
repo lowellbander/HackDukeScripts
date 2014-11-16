@@ -21,15 +21,15 @@ def intersection_to_coords(street1, street2):
 
     response = urllib2.urlopen(URL)
     result = response.read()
-    return json.loads(result)
-
-def main():
-    result = intersection_to_coords("South Alston", "Dayton")
+    result = json.loads(result)
     try:
         coords = result['Response']['View'][0]['Result'][0]['Location']['DisplayPosition']
     except IndexError:
-        print "No Coordinates Found!"
-        return
+        return None
+    return coords
+
+def main():
+    coords = intersection_to_coords("I85", "Dayton")
     
     print coords
 
