@@ -23,7 +23,7 @@ def main():
 
     terms = ['I-40', 'I-85', 'I-440', 'I-540', 'US Route 1', 'US Route 15', 'US Route 64', 'US Route 70', 'US Route 264', 'US Route 401', 'US Route 501', 'NC147', 'NC540 ', 'car crash', 'car accident', 'car collision', 'car pile up']
 
-    fields = ['text', 'geo']
+    fields = ['text', 'geo', 'created_at']
 
     for term in terms:
         results = do_query(term)
