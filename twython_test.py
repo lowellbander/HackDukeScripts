@@ -1,6 +1,7 @@
 from twython import Twython
 import urllib
 from pprint import pprint
+from firebase import Firebase
 
 APP_KEY = 'hvddwcOWke5tcwZ7fqsylEUrD'
 APP_SECRET = 'J0S2QdnMHa7dos3eX0xjho9rF8f0aw5OGsFAyiRzXMEBdF9Qxc'
@@ -10,7 +11,7 @@ def do_query(query):
     query = urllib.quote_plus(query)
     query = query[:140] # twitter queries limited to 140 chars
     print "query: " + query
-    return twitter.search(q=query, count=15)
+    return twitter.search(q=query, count=1)
 
 def print_results(results, fields):
     for status in results['statuses']:
@@ -18,6 +19,15 @@ def print_results(results, fields):
         for field in fields:
             print field + ": ",
             print status[field]
+
+def upload(status):
+    f = Firebase('https://amber-fire-5569.firebaseio.com/tweets')
+    payload = {}
+    payload['body'] = status['text']
+    payload['geo'] = status['geo']
+    payload['date'] = status['created_at']
+    print payload
+    f.push(payload)
 
 def main():
 
@@ -27,7 +37,8 @@ def main():
 
     for term in terms:
         results = do_query(term)
-        print_results(results, fields)
+        for status in results['statuses']:
+            upload (status)
 
 if __name__ == "__main__":
     main()
